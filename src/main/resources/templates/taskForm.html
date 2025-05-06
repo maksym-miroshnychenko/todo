@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Task</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/tasks">Task Manager</a>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Create New Task</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Error message if present -->
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('task.description')}">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <span th:each="err : ${#fields.errors('task.description')}" th:text="${err}"></span>
+                        </div>
+
+                        <form th:action="@{/task/save}" th:object="${task}" method="post">
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Task Description</label>
+                                <input type="text" class="form-control" id="description" th:field="*{description}"
+                                       placeholder="Enter task description" required>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="completed" th:field="*{completed}">
+                                <label class="form-check-label" for="completed">Mark as completed</label>
+                                <span id="status-badge" class="badge ms-2 bg-warning">Pending</span>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <a href="/tasks" class="btn btn-secondary">
+                                    <i class="bi bi-x-lg me-1"></i> Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-save me-1"></i> Save Task
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkbox = document.getElementById('completed');
+            const statusBadge = document.getElementById('status-badge');
+
+            function updateStatus() {
+                if (checkbox.checked) {
+                    statusBadge.textContent = 'Completed';
+                    statusBadge.classList.remove('bg-warning');
+                    statusBadge.classList.add('bg-success');
+                } else {
+                    statusBadge.textContent = 'Pending';
+                    statusBadge.classList.remove('bg-success');
+                    statusBadge.classList.add('bg-warning');
+                }
+            }
+
+            // Initial status update
+            updateStatus();
+
+            // Listen for changes
+            checkbox.addEventListener('change', updateStatus);
+        });
+    </script>
+</body>
+</html>
