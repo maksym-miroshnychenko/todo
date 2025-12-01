@@ -6,5 +6,7 @@
 
 # How the program works
   After starting the local server, a webpage opens where all the actions mentioned above can be performed.
+  ![Example1](https://github.com/maksym-miroshnychenko/todo/blob/master/Example1.png)
+  ![Example2](https://github.com/maksym-miroshnychenko/todo/blob/master/Example2.png)
   
   At the current stage, the tasks are saved only as long as the server remains active.
